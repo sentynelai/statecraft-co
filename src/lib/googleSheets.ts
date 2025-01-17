@@ -1,6 +1,6 @@
 import { ProvincialData } from '../types';
 
-const SPREADSHEET_ID = import.meta.env.VITE_GOOGLE_SPREADSHEET_ID;
+const SPREADSHEET_ID = '11cHtcmd3KQEUlFiOAdh-bc9vtXh12qe-oB_y2opsh50';
 const API_KEY = import.meta.env.VITE_GOOGLE_SHEETS_API_KEY;
 
 // Make sure the spreadsheet is publicly readable and use the correct range

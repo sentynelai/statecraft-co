@@ -11,7 +11,6 @@ export const LocationInsight: React.FC<LocationInsightProps> = ({ location }) =>
   const insights = [
     { title: 'Análisis', content: location.analisis },
     { title: 'Recomendaciones', content: location.recomendaciones },
-    { title: 'Noticias', content: location.conclusiones }
   ];
 
   return (

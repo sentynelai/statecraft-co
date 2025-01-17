@@ -1,13 +1,14 @@
 import React from 'react';
 import { Newspaper, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import type { NewsItem } from '../../lib/services/newsService';
 
 interface NewsCardProps {
-  content: string;
+  news: NewsItem;
   index: number;
 }
 
-export const NewsCard: React.FC<NewsCardProps> = ({ content, index }) => {
+export const NewsCard: React.FC<NewsCardProps> = ({ news, index }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -20,16 +21,23 @@ export const NewsCard: React.FC<NewsCardProps> = ({ content, index }) => {
           <Newspaper className="w-5 h-5 text-purple-500" />
         </div>
         <div className="space-y-2 flex-1">
-          <p className="text-dark-200">{content}</p>
+          <h3 className="font-medium">{news.titulo}</h3>
           <div className="flex items-center justify-between text-sm">
-            <span className="text-dark-400">Fuente: Gobierno de Entre Ríos</span>
-            <div className="flex items-center gap-1 text-purple-500 opacity-0 group-hover:opacity-100 transition-opacity">
-              <span className="text-sm">Leer más</span>
-              <ArrowRight className="w-4 h-4" />
-            </div>
+            <span className="text-dark-400">{news.departamento}</span>
+            {news.enlace && (
+              <a
+                href={news.enlace}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-purple-500 opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <span className="text-sm">Leer más</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
+            )}
           </div>
         </div>
       </div>
     </motion.div>
   );
-};
+}

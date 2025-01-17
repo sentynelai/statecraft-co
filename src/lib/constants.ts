@@ -1,6 +1,6 @@
 // Google Sheets Configuration
 export const SHEETS_CONFIG = {
-  SPREADSHEET_ID: '154Ic1dbtqCR0h4ISwqaiCyd_GKu5Wa_czlZbHbsJkwQ',
+  SPREADSHEET_ID: '11cHtcmd3KQEUlFiOAdh-bc9vtXh12qe-oB_y2opsh50',
   SHEET_GID: '0',
   SHEET_NAME: 'Demografía'
 } as const;

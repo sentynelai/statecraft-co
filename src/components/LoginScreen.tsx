@@ -50,7 +50,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
               <Logo />
             </div>
             <h1 className="text-2xl font-bold mb-2">Bienvenido a Statecraft</h1>
-            <p className="text-dark-400">Provincia de Entre Ríos</p>
+            <p className="text-dark-400">Provincia de Corrientes</p>
           </motion.div>
 
           <div className="flex items-center gap-3 mb-8">

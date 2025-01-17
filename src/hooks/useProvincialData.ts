@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import { fetchProvincialData } from '../lib/services/data/provincial';
+import { fetchSheetData } from '../lib/services/sheetService';
 import type { SheetData } from '../lib/types/sheets';
 
 export function useProvincialData() {
@@ -7,14 +7,15 @@ export function useProvincialData() {
     'provincial-data',
     async () => {
       try {
-        const data = await fetchProvincialData();
+        const data = await fetchSheetData();
         if (!data || data.length === 0) {
-          throw new Error('No se encontraron datos en la hoja de cálculo');
+          console.warn('No data found in spreadsheet');
+          return [];
         }
         return data;
       } catch (error) {
-        const message = error instanceof Error ? error.message : 'Error desconocido';
-        throw new Error(message);
+        console.error('Error fetching provincial data:', error);
+        return [];
       }
     },
     {
@@ -33,7 +34,7 @@ export function useProvincialData() {
     isLoading,
     isError: !!error,
     error: error instanceof Error ? error.message : 'Error desconocido',
-    mutate // Expose mutate function for manual revalidation
+    mutate
   };
 }
 

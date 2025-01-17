@@ -1,10 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Users, X } from 'lucide-react';
-import type { SheetData } from '../../lib/types/sheets';
+import type { SheetData } from '../../types/sheets';
 import { AudienceStats } from './AudienceStats';
 import { LocationInsight } from './LocationInsight';
 import { InfluencersModal } from './InfluencersModal';
+import { useNewsData } from '../../hooks/useNewsData';
+import { useEventsData } from '../../hooks/useEventsData';
+import { NewsCard } from '../modals/NewsCard';
+import { EventCard } from '../modals/EventCard';
 
 interface LocationModalsProps {
   location: SheetData;
@@ -12,6 +16,9 @@ interface LocationModalsProps {
 }
 
 export const LocationModals: React.FC<LocationModalsProps> = ({ location, onClose }) => {
+  const { news } = useNewsData(location.departamento);
+  const { events } = useEventsData(location.departamento);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -20,7 +27,7 @@ export const LocationModals: React.FC<LocationModalsProps> = ({ location, onClos
       className="fixed inset-0 bg-dark-950/80 backdrop-blur-sm z-50 flex items-start justify-center p-4 pt-24 overflow-y-auto"
     >
       <div className="w-full max-w-4xl space-y-4">
-        {/* Population and Digital Audience */}
+        {/* Demographics and Digital Audience */}
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -50,13 +57,45 @@ export const LocationModals: React.FC<LocationModalsProps> = ({ location, onClos
           </div>
         </motion.div>
 
-        {/* Location Insights */}
+        {/* Analysis and Recommendations */}
         <LocationInsight location={location} />
 
+        {/* Events Section */}
+        {events && events.length > 0 && (
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-dark-950/90 rounded-xl border border-dark-800/50 backdrop-blur-xl p-6"
+          >
+            <h3 className="text-lg font-semibold mb-4">Eventos</h3>
+            <div className="space-y-4">
+              {events.slice(0, 5).map((event, index) => (
+                <EventCard key={index} event={event} index={index} />
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* News Section */}
+        {news && news.length > 0 && (
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-dark-950/90 rounded-xl border border-dark-800/50 backdrop-blur-xl p-6"
+          >
+            <h3 className="text-lg font-semibold mb-4">Noticias</h3>
+            <div className="space-y-4">
+              {news.slice(0, 5).map((item, index) => (
+                <NewsCard key={index} news={item} index={index} />
+              ))}
+            </div>
+          </motion.div>
+        )}
+
         {/* Influencers Section */}
-          <div className="px-6 pb-6">
-            <InfluencersModal departamento={location.departamento} />
-          </div>
+        <div className="px-6 pb-6">
+          <InfluencersModal departamento={location.departamento} />
+        </div>
       </div>
     </motion.div>
   );

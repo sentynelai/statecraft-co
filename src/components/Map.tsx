@@ -5,7 +5,7 @@ import { LocationModals } from './map/LocationModals';
 import { useProvincialData } from '../hooks/useProvincialData';
 import type { SheetData } from '../lib/types/sheets';
 
-const ENTRE_RIOS_CENTER = { lat: -31.7333, lng: -60.5333 };
+const CORRIENTES_CENTER = { lat: -27.4806, lng: -58.8341 }; // Updated to Corrientes coordinates
 
 interface TooltipState {
   content: string;
@@ -30,15 +30,21 @@ export const Map: React.FC = () => {
   useEffect(() => {
     if (!mapRef.current || isLoading || !locations?.length) return;
 
+    const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+    if (!API_KEY) {
+      console.error('Google Maps API key is not configured');
+      return;
+    }
+
     const loader = new Loader({
-      apiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+      apiKey: API_KEY,
       version: 'weekly'
     });
 
     loader.load().then((google) => {
       if (!mapInstanceRef.current) {
         mapInstanceRef.current = new google.maps.Map(mapRef.current!, {
-          center: ENTRE_RIOS_CENTER,
+          center: CORRIENTES_CENTER,
           zoom: 8,
           styles: [
             {
@@ -86,7 +92,6 @@ export const Map: React.FC = () => {
           }
         });
 
-        // Add hover event listeners
         marker.addListener('mouseover', (e: google.maps.MapMouseEvent) => {
           const event = e.domEvent as MouseEvent;
           setTooltip({
@@ -104,6 +109,8 @@ export const Map: React.FC = () => {
         marker.addListener('click', () => setSelectedLocation(location));
         markersRef.current.push(marker);
       });
+    }).catch(error => {
+      console.error('Error loading Google Maps:', error);
     });
 
     return () => {
@@ -116,7 +123,6 @@ export const Map: React.FC = () => {
     <div className="relative w-full h-full">
       <div ref={mapRef} className="absolute inset-0" />
       
-      {/* Custom Tooltip */}
       <AnimatePresence>
         {tooltip.visible && (
           <motion.div

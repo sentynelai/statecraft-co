@@ -1,8 +1,9 @@
 import React from 'react';
 import { Users, Facebook, MessageCircle, Chrome, Calendar, Newspaper, X } from 'lucide-react';
 import { useProvincialData } from '../../hooks/useProvincialData';
+import { useNewsData } from '../../hooks/useNewsData';
+import { useEventsData } from '../../hooks/useEventsData';
 import { calculateTotalPopulation, calculateAudienceTotals } from '../../lib/utils/calculations';
-import { getRandomEvents } from '../../lib/utils/events';
 import { Modal } from '../ui/Modal';
 import { ModalOverlay } from '../ui/ModalOverlay';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -12,11 +13,12 @@ import { NewsCard } from './NewsCard';
 
 export const InfoModals: React.FC = () => {
   const { data } = useProvincialData();
+  const { news } = useNewsData();
+  const { events } = useEventsData();
   const { closeAllModals, isOpen } = useModalStore();
   
   const totalPopulation = calculateTotalPopulation(data);
   const audienceTotals = calculateAudienceTotals(data);
-  const randomEvents = getRandomEvents(data);
 
   const modals = [
     {
@@ -85,6 +87,28 @@ export const InfoModals: React.FC = () => {
             sociales y económicas</strong>, reflejando las principales preocupaciones e intereses 
             de la comunidad.
           </p>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="p-4 bg-dark-800/30 rounded-lg">
+              <h4 className="text-sm font-medium mb-2">Temas Principales</h4>
+              <ul className="space-y-2 text-sm text-dark-400">
+                <li>• Seguridad ciudadana</li>
+                <li>• Desarrollo económico</li>
+                <li>• Infraestructura urbana</li>
+                <li>• Educación pública</li>
+                <li>• Medio ambiente</li>
+              </ul>
+            </div>
+            <div className="p-4 bg-dark-800/30 rounded-lg">
+              <h4 className="text-sm font-medium mb-2">Tendencias Emergentes</h4>
+              <ul className="space-y-2 text-sm text-dark-400">
+                <li>• Innovación tecnológica</li>
+                <li>• Turismo sostenible</li>
+                <li>• Cultura local</li>
+                <li>• Deportes y recreación</li>
+                <li>• Salud comunitaria</li>
+              </ul>
+            </div>
+          </div>
         </div>
       )
     },
@@ -93,16 +117,13 @@ export const InfoModals: React.FC = () => {
       icon: Calendar,
       content: (
         <div className="space-y-4">
-          <p className="text-dark-400">
-            Las publicaciones tratan sobre <strong>seguridad</strong>, <strong>salud pública</strong>, 
-            <strong>eventos culturales</strong>, <strong>turismo</strong> y <strong>problemáticas 
-            sociales y económicas</strong>, reflejando las principales preocupaciones e intereses 
-            de la comunidad.
-          </p>
-          
-          {randomEvents.map((event, index) => (
-            <EventCard key={index} content={event} index={index} />
-          ))}
+          {events && events.length > 0 ? (
+            events.slice(0, 5).map((event, index) => (
+              <EventCard key={index} event={event} index={index} />
+            ))
+          ) : (
+            <p className="text-dark-400">No hay eventos disponibles en este momento.</p>
+          )}
         </div>
       )
     },
@@ -111,16 +132,13 @@ export const InfoModals: React.FC = () => {
       icon: Newspaper,
       content: (
         <div className="space-y-4">
-          <p className="text-dark-400">
-            Las publicaciones tratan sobre <strong>seguridad</strong>, <strong>salud pública</strong>, 
-            <strong>eventos culturales</strong>, <strong>turismo</strong> y <strong>problemáticas 
-            sociales y económicas</strong>, reflejando las principales preocupaciones e intereses 
-            de la comunidad.
-          </p>
-          
-          {data.slice(0, 3).map((dept, index) => (
-            <NewsCard key={index} content={dept.conclusiones} index={index} />
-          ))}
+          {news && news.length > 0 ? (
+            news.slice(0, 5).map((item, index) => (
+              <NewsCard key={index} news={item} index={index} />
+            ))
+          ) : (
+            <p className="text-dark-400">No hay noticias disponibles en este momento.</p>
+          )}
         </div>
       )
     }
@@ -131,7 +149,6 @@ export const InfoModals: React.FC = () => {
       {isOpen && (
         <>
           <ModalOverlay />
-          {/* Close button */}
           <motion.button
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
