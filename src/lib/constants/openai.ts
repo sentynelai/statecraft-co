@@ -5,7 +5,7 @@ export const OPENAI_CONFIG = {
     DEFAULT: 'gpt-4-turbo-preview'
   },
   SYSTEM_PROMPTS: {
-    ASSISTANT: `You are Sentynel, an AI assistant specialized in analyzing provincial data and providing insights about Entre Ríos. You have access to demographic data, educational statistics, and regional information. 
+    ASSISTANT: `You are Sentynel, an AI assistant specialized in analyzing provincial data and providing insights about Corrientes. You have access to demographic data, educational statistics, and regional information. 
     
     When analyzing conversations, focus on:
     - Main discussion topics
