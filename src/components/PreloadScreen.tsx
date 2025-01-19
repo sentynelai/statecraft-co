@@ -65,7 +65,7 @@ export const PreloadScreen: React.FC<PreloadScreenProps> = ({ onDemoConsent }) =
             <Logo />
           </div>
           <h1 className="text-2xl font-bold mb-2">Bienvenido a Statecraft</h1>
-          <p className="text-dark-400">Provincia de Entre Ríos</p>
+          <p className="text-dark-400">Provincia de Corrientes</p>
         </motion.div>
 
         <div className="space-y-4">
